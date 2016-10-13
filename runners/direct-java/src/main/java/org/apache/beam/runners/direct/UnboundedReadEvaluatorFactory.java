@@ -37,6 +37,7 @@ import org.apache.beam.sdk.transforms.PTransform;
 import org.apache.beam.sdk.transforms.windowing.BoundedWindow;
 import org.apache.beam.sdk.transforms.windowing.GlobalWindow;
 import org.apache.beam.sdk.util.WindowedValue;
+import org.apache.beam.sdk.values.PBegin;
 import org.apache.beam.sdk.values.PCollection;
 import org.joda.time.Instant;
 
@@ -70,7 +71,7 @@ class UnboundedReadEvaluatorFactory implements TransformEvaluatorFactory {
   }
 
   private <OutputT> TransformEvaluator<?> createEvaluator(
-      AppliedPTransform<?, PCollection<OutputT>, Read.Unbounded<OutputT>> application) {
+      AppliedPTransform<PBegin, PCollection<OutputT>, Read.Unbounded<OutputT>> application) {
     return new UnboundedReadEvaluator<>(
         application, evaluationContext, readerReuseChance);
   }
@@ -258,7 +259,7 @@ class UnboundedReadEvaluatorFactory implements TransformEvaluatorFactory {
     }
 
     private <OutputT> Collection<CommittedBundle<?>> createInitialSplits(
-        AppliedPTransform<?, ?, Read.Unbounded<OutputT>> transform) {
+        AppliedPTransform<PBegin, ?, Read.Unbounded<OutputT>> transform) {
       UnboundedSource<OutputT, ?> source = transform.getTransform().getSource();
       UnboundedReadDeduplicator deduplicator =
           source.requiresDeduping()

@@ -33,6 +33,7 @@ import org.apache.beam.sdk.transforms.AppliedPTransform;
 import org.apache.beam.sdk.transforms.PTransform;
 import org.apache.beam.sdk.transforms.windowing.BoundedWindow;
 import org.apache.beam.sdk.util.WindowedValue;
+import org.apache.beam.sdk.values.PBegin;
 import org.apache.beam.sdk.values.PCollection;
 
 /**
@@ -131,7 +132,7 @@ final class BoundedReadEvaluatorFactory implements TransformEvaluatorFactory {
     }
 
     private <OutputT> Collection<CommittedBundle<?>> createInitialSplits(
-        AppliedPTransform<?, ?, Read.Bounded<OutputT>> transform) {
+        AppliedPTransform<PBegin, ?, Read.Bounded<OutputT>> transform) {
       BoundedSource<OutputT> source = transform.getTransform().getSource();
       return Collections.<CommittedBundle<?>>singleton(
           evaluationContext

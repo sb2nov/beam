@@ -204,7 +204,7 @@ class TestStreamEvaluatorFactory implements TransformEvaluatorFactory {
     }
 
     private <T> Collection<CommittedBundle<?>> createInputBundle(
-        AppliedPTransform<?, ?, TestStream<T>> transform) {
+        AppliedPTransform<PBegin, ?, TestStream<T>> transform) {
       CommittedBundle<TestStreamIndex<T>> initialBundle =
           evaluationContext
               .<TestStreamIndex<T>>createRootBundle()
