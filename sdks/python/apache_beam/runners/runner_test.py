@@ -109,11 +109,11 @@ class RunnerTest(unittest.TestCase):
                 'a_class': SpecialParDo,
                 'a_time': self.now}
 
-    class SpecialDoFn(beam.DoFn):
+    class SpecialDoFn(beam.NewDoFn):
       def display_data(self):
         return {'dofn_value': 42}
 
-      def process(self, context):
+      def process(self):
         pass
 
     now = datetime.now()
@@ -146,13 +146,13 @@ class RunnerTest(unittest.TestCase):
   def test_direct_runner_metrics(self):
     from apache_beam.metrics.metric import Metrics
 
-    class MyDoFn(beam.DoFn):
-      def process(self, context):
+    class MyDoFn(beam.NewDoFn):
+      def process(self, element):
         count = Metrics.counter(self.__class__, 'elements')
         count.inc()
         distro = Metrics.distribution(self.__class__, 'element-dist')
-        distro.update(context.element)
-        return [context.element]
+        distro.update(element)
+        return [element]
 
     runner = DirectRunner()
     p = Pipeline(runner,
